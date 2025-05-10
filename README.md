@@ -10,3 +10,8 @@ This is a web-based application to detect fake news using a machine learning mod
 - Built using TensorFlow, Keras, and Flask
 - Trained on a labeled news dataset
 - Includes a simple web interface
+
+## 🖼️ Sample
+
+![Screenshot 2025-05-10 090449](https://github.com/user-attachments/assets/e667a848-6411-4c80-97ea-c54060f29a3f)
+
