@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fake News Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+        }
+        h2 {
+            text-align: center;
+        }
+        .form-container {
+            max-width: 400px;
+            margin: auto;
+        }
+        .input-field {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+        .button {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Fake News Detection</h2>
+
+<div class="form-container">
+    <label for="text">Enter News Text:</label>
+    <textarea id="text" class="input-field" rows="5" placeholder="Enter news text to classify..."></textarea>
+
+    <button class="button" onclick="predictFakeNews()">Predict</button>
+    <br><br>
+    <button class="button" onclick="trainModel()">Train with New Data</button>
+
+    <div id="result" class="result"></div>
+</div>
+
+<script>
+    async function predictFakeNews() {
+        const text = document.getElementById("text").value;
+        if (!text) {
+            alert("Please enter some text to classify.");
+            return;
+        }
+
+        const response = await fetch("http://127.0.0.1:5000/predict", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ text })
+        });
+
+        const data = await response.json();
+        if (data.label) {
+            document.getElementById("result").innerHTML = `Prediction: ${data.label} (Confidence: ${data.confidence})`;
+        } else {
+            document.getElementById("result").innerHTML = `Error: ${data.error}`;
+        }
+    }
+
+    async function trainModel() {
+        const text = document.getElementById("text").value;
+        const label = prompt("Enter label for training data (0 for Fake, 1 for True):");
+        if (!text || !label) {
+            alert("Please provide both text and label.");
+            return;
+        }
+
+        const response = await fetch("http://127.0.0.1:5000/train", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ text, label: parseInt(label) })
+        });
+
+        const data = await response.json();
+        document.getElementById("result").innerHTML = data.message;
+    }
+</script>
+
+</body>
+</html>

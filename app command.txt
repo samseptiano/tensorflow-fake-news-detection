@@ -1,0 +1,16 @@
+✅ Final Quick Test Commands
+
+Predict:
+python input.py --text "NASA confirms water on Mars"
+
+Train with input:
+python input.py --train --text "NASA confirms water on Mars" --label 1
+
+Retrain using all data:
+python input.py --train
+
+View user data:
+python input.py --view_user_data
+
+Clear user data:
+python input.py --clear_user_data
